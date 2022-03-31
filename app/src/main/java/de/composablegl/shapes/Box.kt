@@ -42,6 +42,7 @@ class Box(private val firstColor: FloatArray) {
                 "  gl_FragColor = vColor;" +
                 "}"
 
+    //Locations
     private var positionHandle: Int = 0
     private var mColorHandle: Int = 0
 
@@ -121,9 +122,6 @@ class Box(private val firstColor: FloatArray) {
 
 
 
-
-
-
     fun draw() {
         // Add program to OpenGL ES environment
         GLES20.glUseProgram(mProgram)
@@ -151,7 +149,7 @@ class Box(private val firstColor: FloatArray) {
                 GLES20.glUniform4fv(colorHandle, 1, color, 0)
             }
 
-            // Draw the triangle
+            // Draw the triangles
             GLES20.glDrawElements(GLES20.GL_TRIANGLES,drawOrder.size,GLES20.GL_UNSIGNED_SHORT,drawListBuffer)
 
             // Disable vertex array
@@ -161,7 +159,7 @@ class Box(private val firstColor: FloatArray) {
 
     fun setColor(color: FloatArray){
         this.color = color
-    }
 
+    }
 }
 

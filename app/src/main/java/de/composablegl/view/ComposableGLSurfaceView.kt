@@ -22,12 +22,23 @@ class ComposableGLSurfaceView(context: Context?) : GLSurfaceView(context) {
         renderer = ComposableGLRenderer(color)
 
         setRenderer(renderer)
+
+        // Render the view only when there is a change in the drawing data
+        renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
+
+
         preserveEGLContextOnPause = true
 
+        requestRender()
 
     }
     fun redraw(color: FloatArray){
         renderer.redrawBox(color)
+    }
+
+
+    override fun onPause() {
+        super.onPause()
     }
 
 

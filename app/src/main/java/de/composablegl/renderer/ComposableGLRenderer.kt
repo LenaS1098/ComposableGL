@@ -29,6 +29,7 @@ class ComposableGLRenderer(private val color:FloatArray): GLSurfaceView.Renderer
 
     override fun onDrawFrame(gl: GL10) {
         // Redraw background color
+        Log.d("renderer","onDrawFrame")
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
         mBox.draw()
     }

@@ -1,8 +1,5 @@
 package de.composablegl
 
-import android.content.Context
-import android.opengl.GLES20
-import android.opengl.GLSurfaceView
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -13,20 +10,15 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import de.composablegl.renderer.ComposableGLRenderer
 import de.composablegl.ui.theme.ComposableGLTheme
 import de.composablegl.view.ComposableGLSurfaceView
 
@@ -48,7 +40,7 @@ class MainActivity : ComponentActivity() {
 fun MainScreen(){
     val temperatur = remember{ mutableStateOf(26.0f)}
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally){
-        AllInOne(temperature = temperatur.value)
+        Transportbox(temperature = temperatur.value)
         //TempScreen(temperature = temperatur.value)
         Text(text = temperatur.value.toString(), modifier = Modifier.padding(30.dp), fontSize = 35.sp, textAlign = TextAlign.Center)
         Row(
@@ -72,8 +64,9 @@ fun MainScreen(){
     }
 }
 
+//Einfügen das nur bei Farbwechsel neu gerendert wird
 @Composable
-fun AllInOne(temperature: Float){
+fun Transportbox(temperature: Float){
     AndroidView(
         modifier = Modifier
             .fillMaxWidth()
@@ -83,7 +76,7 @@ fun AllInOne(temperature: Float){
         }, update = {   view ->
             view.queueEvent(Runnable {
                 view.redraw(getColorByTemp(temperature))
-
+                view.requestRender()
             })
         })
 }
@@ -118,10 +111,12 @@ fun TempView(color:FloatArray){
         factory = { it ->
             ComposableGLSurfaceView(it)
         }, update = {   view ->
-            view.queueEvent(Runnable {
+            /*view.queueEvent(Runnable {
                view.redraw(color)
-
-            })
+            })*/
+            view.queueEvent {
+                view.requestRender()
+            }
         })
 }
 
